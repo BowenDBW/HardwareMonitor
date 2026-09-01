@@ -143,7 +143,8 @@ class Monitor(private val context: Context) {
     }
 
     private fun sampleNow(): Sample {
-        val reads = sysfs.readMany(freqPaths + maxFreqPaths)
+        // 频率 + 各 thermal zone 的 temp 文件（readTemps 需要）
+        val reads = sysfs.readMany(freqPaths + maxFreqPaths + sysfs.thermalZones.map { it.first })
         val n = sysfs.cpuCores.size
         val freq = IntArray(n)
         val maxFreq = IntArray(n)

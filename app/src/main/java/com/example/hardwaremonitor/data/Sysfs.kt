@@ -30,7 +30,7 @@ class SysfsReader {
         private set
     var npuPath: String? = null
         private set
-    /** (zonePath, zoneType) 列表，type 用于分类 cpu/gpu/battery 温度 */
+    /** (tempFilePath, zoneType) 列表，type 用于分类 cpu/gpu/battery 温度 */
     var thermalZones: List<Pair<String, String>> = emptyList()
         private set
 
@@ -56,11 +56,11 @@ class SysfsReader {
         gpuMaxClkPath = probe("$kgsl/max_gpuclk")
         Log.i(TAG, "discover: gpuBusy=$gpuBusyPath gpuClk=$gpuClkPath maxClk=$gpuMaxClkPath")
 
-        // Thermal zones
+        // Thermal zones（存 temp 文件路径，温度值在该文件内，单位毫摄氏度）
         thermalZones = File("/sys/class/thermal").listFiles { f -> f.name.startsWith("thermal_zone") }
             ?.mapNotNull { z ->
                 val type = try { File(z, "type").readText().trim() } catch (e: Exception) { "" }
-                if (type.isEmpty()) null else (z.absolutePath to type)
+                if (type.isEmpty()) null else (File(z, "temp").absolutePath to type)
             } ?: emptyList()
         Log.i(TAG, "discover: thermalZones=${thermalZones.map { it.second }}")
 

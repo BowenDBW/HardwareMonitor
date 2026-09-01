@@ -134,9 +134,9 @@ private fun InfoBar(sample: Sample?, mirror: Boolean) {
         }
         val temps: @Composable () -> Unit = {
             Column(horizontalAlignment = Alignment.End) {
-                TempLine("CPU", sample?.tempCpu)
-                TempLine("GPU", sample?.tempGpu)
-                TempLine("BAT", sample?.tempBattery)
+                TempLine("CPU", sample?.tempCpu, c.cpu)
+                TempLine("GPU", sample?.tempGpu, c.gpu)
+                TempLine("BAT", sample?.tempBattery, c.bat)
             }
         }
         if (mirror) {
@@ -171,12 +171,11 @@ private fun Stat(label: String, pct: Float?, freqText: String?, color: Color) {
 }
 
 @Composable
-private fun TempLine(label: String, value: Float?) {
-    val c = LocalHwmPalette.current
+private fun TempLine(label: String, value: Float?, color: Color) {
     Text(
         text = if (value != null) "$label ${value.toInt()}°" else "$label --",
         fontSize = 10.sp,
-        color = c.textDim,
+        color = color,
         fontFamily = FontFamily.Monospace,
     )
 }

@@ -76,6 +76,7 @@ data class HwmPalette(
     val gpu: Color,
     val npu: Color,
     val ram: Color,
+    val bat: Color,
 )
 
 val LocalHwmPalette = staticCompositionLocalOf { defaultPalette() }
@@ -95,6 +96,7 @@ fun defaultPalette(hueDeg: Float = 0f): HwmPalette {
         gpu = mod(MODULE_HUE_STEP),    // 湖蓝
         npu = mod(MODULE_HUE_STEP * 2),// 天蓝
         ram = mod(MODULE_HUE_STEP * 3),// 靛蓝
+        bat = mod(MODULE_HUE_STEP * 4),// 深蓝（电池温度）
     )
 }
 
